@@ -1,7 +1,10 @@
 import secrets
 
 import praw
-
+import urllib
+from urllib.error import HTTPError
+from prawcore.exceptions import Redirect
+from prawcore.exceptions import NotFound
 
 class Scrapper:
 
@@ -18,17 +21,21 @@ class Scrapper:
 
     def scrape_posts(self):
         for sub in self._selected_subreddits:
+            subreddit = self._connection.subreddit(sub)
             try:
                 subreddit = self._connection.subreddit(sub)
 
                 print("Retrieving information from subreddit: " + sub)
 
-                for post in subreddit.top(limit=10):
+                for post in subreddit.top(limit=5):
                     print(post.title, post.id)
                     self._controller.add_post(post)
-            except Exception:
+            except Redirect:
                 print("No such subreddit: " + sub)
                 print("Moving to next...")
+                continue
+            except NotFound:
+                print("No such subreddit exists: " + sub)
                 continue
 
 
