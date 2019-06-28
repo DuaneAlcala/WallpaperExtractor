@@ -25,7 +25,7 @@ class Scrapper:
 
                 print("Retrieving information from subreddit: " + sub)
 
-                for post in subreddit.top(limit=5):
+                for post in subreddit.top(limit=15):
                     print(post.title, post.id)
                     self._controller.add_post(post)
             except Redirect:
@@ -35,6 +35,7 @@ class Scrapper:
             except NotFound:
                 print("No such subreddit exists: " + sub)
                 continue
+        self._controller.stop_refresh()
 
     def set_upvote_threshold(self, upvote_threshold):
         self._upvote_threshold = upvote_threshold
