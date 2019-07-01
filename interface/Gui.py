@@ -1,7 +1,7 @@
 import tkinter
-import threading
 import queue
 from PIL import Image, ImageTk
+
 
 class Gui:
 
@@ -35,7 +35,8 @@ class Gui:
         self._root.resizable(False, False)
 
         self.__create_subreddits_panel()
-        self.__create_right_fragment()
+        # self.__create_right_fragment()
+        self.__create_settings_fragment()
 
     def __create_subreddits_panel(self):
         self._subreddits_panel = tkinter.Frame(self._root, width=self._left_fragment_width, height=self._height, background="black")
@@ -92,6 +93,14 @@ class Gui:
         self._images_frame.pack_propagate(False)
         right_fragment_panel.pack_propagate(False)
 
+    def __create_settings_fragment(self):
+        settings_fragment_panel = tkinter.Frame(self._root, width=self._right_fragment_width, height=self._height, background="#121212")
+        settings_fragment_panel.place(x=self._left_fragment_width, y=0)
+
+        directory_label = tkinter.Label()
+
+        settings_fragment_panel.pack_propagate(False)
+
     def refresh_images(self):
         while self._images_queue.qsize():
             try:
@@ -106,7 +115,7 @@ class Gui:
                 label_test.image = something
                 label_test.grid(row=self.row_count, column=self.column_count, padx=5, pady=5)
                 self.column_count = self.column_count + 1
-                if self.column_count == 5:
+                if self.column_count == 15:
                     self.column_count = 0
                     self.row_count = self.row_count + 1
             except queue.Empty:
